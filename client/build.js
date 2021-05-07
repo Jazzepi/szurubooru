@@ -4,20 +4,20 @@
 // -------------------------------------------------
 
 const webapp_icons = [
-    {name: 'android-chrome-192x192.png', size: 192},
-    {name: 'android-chrome-512x512.png', size: 512},
-    {name: 'apple-touch-icon.png', size: 180},
-    {name: 'mstile-150x150.png', size: 150}
+    { name: 'android-chrome-192x192.png', size: 192 },
+    { name: 'android-chrome-512x512.png', size: 512 },
+    { name: 'apple-touch-icon.png', size: 180 },
+    { name: 'mstile-150x150.png', size: 150 }
 ];
 
 const webapp_splash_screens = [
-    {w:  640, h: 1136, center: 320},
-    {w:  750, h: 1294, center: 375},
-    {w: 1125, h: 2436, center: 565},
-    {w: 1242, h: 2148, center: 625},
-    {w: 1536, h: 2048, center: 770},
-    {w: 1668, h: 2224, center: 820},
-    {w: 2048, h: 2732, center: 1024}
+    { w: 640, h: 1136, center: 320 },
+    { w: 750, h: 1294, center: 375 },
+    { w: 1125, h: 2436, center: 565 },
+    { w: 1242, h: 2148, center: 625 },
+    { w: 1536, h: 2048, center: 770 },
+    { w: 1668, h: 2224, center: 820 },
+    { w: 2048, h: 2732, center: 1024 }
 ];
 
 const external_js = [
@@ -112,7 +112,7 @@ function bundleHtml() {
             (match, number) => { return placeholders[number]; });
 
         const functionText = underscore.template(
-            templateText, {variable: 'ctx'}).source;
+            templateText, { variable: 'ctx' }).source;
 
         compiledTemplateJs.push(`templates['${name}'] = ${functionText};`);
     }
@@ -131,7 +131,7 @@ function bundleCss() {
 
     let css = '';
     for (const file of glob.sync('./css/**/*.styl')) {
-        css += stylus.render(readTextFile(file), {filename: file});
+        css += stylus.render(readTextFile(file), { filename: file });
     }
     fs.writeFileSync('./public/css/app.min.css', minifyCss(css));
     if (process.argv.includes('--gzip')) {
@@ -153,7 +153,7 @@ function bundleJs() {
 
     function minifyJs(path) {
         return require('terser').minify(
-            fs.readFileSync(path, 'utf-8'), {compress: {unused: false}}).code;
+            fs.readFileSync(path, 'utf-8'), { compress: { unused: false } }).code;
     }
 
     function writeJsBundle(b, path, compress, callback) {
@@ -185,7 +185,7 @@ function bundleJs() {
     }
 
     if (!process.argv.includes('--no-app-js')) {
-        let b = browserify({debug: process.argv.includes('--debug')});
+        let b = browserify({ debug: process.argv.includes('--debug') });
         if (!process.argv.includes('--no-transpile')) {
             b = b.transform('babelify');
         }
@@ -216,8 +216,8 @@ function bundleConfig() {
     }
     const config = {
         meta: {
-          version: getVersion(),
-          buildDate: new Date().toUTCString()
+            version: getVersion(),
+            buildDate: new Date().toUTCString()
         }
     };
 
@@ -226,10 +226,21 @@ function bundleConfig() {
 }
 
 function bundleBinaryAssets() {
-    fs.copyFileSync('./img/favicon.png', './public/img/favicon.png');
-    fs.copyFileSync('./img/800p.png', './public/img/800p.png');
 
-    console.info('Copied images');
+    fs.copyFileSync('img/favicon.png', './public/img/favicon.png')
+    console.info('Copied favicon');
+
+    let customFiles = [
+        'img/800p.png',
+        'smudge/index.html',
+        'smudge/pricelist.html',
+        'smudge/contact.png',
+    ]
+    for (let file of customFiles) {
+        console.info('Copying', file, 'to', 'public/' + file);
+        fs.copyFileSync(file, './public/' + file)
+    }
+    console.info('Copied customFiles');
 
     fs.copyFileSync('./fonts/open_sans.woff2', './public/fonts/open_sans.woff2')
     for (let file of glob.sync('./node_modules/font-awesome/fonts/*.*')) {
@@ -257,36 +268,37 @@ function bundleWebAppFiles() {
 
     Promise.all(webapp_icons.map(icon => {
         return Jimp.read('./img/app.png')
-        .then(file => {
-            file.resize(icon.size, Jimp.AUTO, Jimp.RESIZE_BEZIER)
-                .write(path.join('./public/img/', icon.name));
-        });
+            .then(file => {
+                file.resize(icon.size, Jimp.AUTO, Jimp.RESIZE_BEZIER)
+                    .write(path.join('./public/img/', icon.name));
+            });
     }))
-    .then(() => {
-        console.info('Generated webapp icons');
-    });
+        .then(() => {
+            console.info('Generated webapp icons');
+        });
 
     Promise.all(webapp_splash_screens.map(dim => {
         return Jimp.read('./img/splash.png')
-        .then(file => {
-            file.resize(dim.center, Jimp.AUTO, Jimp.RESIZE_BEZIER)
-                .background(0xFFFFFFFF)
-                .contain(dim.w, dim.center,
-                    Jimp.HORIZONTAL_ALIGN_CENTER | Jimp.VERTICAL_ALIGN_MIDDLE)
-                .contain(dim.w, dim.h,
-                    Jimp.HORIZONTAL_ALIGN_CENTER | Jimp.VERTICAL_ALIGN_MIDDLE)
-                .write(path.join('./public/img/',
-                    'apple-touch-startup-image-' + dim.w + 'x' + dim.h + '.png'));
-        });
+            .then(file => {
+                file.resize(dim.center, Jimp.AUTO, Jimp.RESIZE_BEZIER)
+                    .background(0xFFFFFFFF)
+                    .contain(dim.w, dim.center,
+                        Jimp.HORIZONTAL_ALIGN_CENTER | Jimp.VERTICAL_ALIGN_MIDDLE)
+                    .contain(dim.w, dim.h,
+                        Jimp.HORIZONTAL_ALIGN_CENTER | Jimp.VERTICAL_ALIGN_MIDDLE)
+                    .write(path.join('./public/img/',
+                        'apple-touch-startup-image-' + dim.w + 'x' + dim.h + '.png'));
+            });
     }))
-    .then(() => {
-        console.info('Generated splash screens');
-    });
+        .then(() => {
+            console.info('Generated splash screens');
+        });
 }
 
 function makeOutputDirs() {
     const dirs = [
         './public',
+        './public/smudge',
         './public/css',
         './public/fonts',
         './public/img',

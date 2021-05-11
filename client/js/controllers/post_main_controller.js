@@ -32,11 +32,7 @@ class PostMainController extends BasePostController {
                 if (parameters.query) {
                     ctx.state.parameters = parameters;
                     const url = editMode
-                        ? uri.formatClientLink(
-                              "post",
-                              ctx.parameters.id,
-                              "edit"
-                          )
+                        ? uri.formatClientLink("post", ctx.parameters.id, "edit")
                         : uri.formatClientLink("post", ctx.parameters.id);
                     router.replace(url, ctx.state, false);
                 }

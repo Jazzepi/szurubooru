@@ -13,6 +13,11 @@ function handleTouchStart(handler, evt) {
 }
 
 function handleTouchMove(handler, evt) {
+    if ( window.visualViewport.width < $('.post-content').innerWidth() ) {
+        $('.classicButtons').css('opacity',0)
+    }else{
+        $('.classicButtons').css('opacity',1)
+    }
     if (!handler._xStart) {
         return;
     }
@@ -28,7 +33,9 @@ function handleTouchMove(handler, evt) {
 }
 
 function handleTouchEnd(handler, evt) {
-    if (handler._multiTouches) return
+    if ($('.fit-original').hasClass('active') || handler._multiTouches) return 
+    let contentWidth = $('.content').innerWidth()
+    if ( window.visualViewport.width < contentWidth ) return
     switch (handler._direction) {
         case direction.NONE:
             return;
@@ -58,6 +65,8 @@ class Touch {
         this._multiTouches = false;
 
         this._direction = direction.NONE;
+
+        this._swipeDisabled = false
 
         this._target.addEventListener("touchstart", (evt) => {
             handleTouchStart(this, evt);

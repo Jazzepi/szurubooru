@@ -232,6 +232,8 @@ function bundleBinaryAssets() {
 
     let customFiles = [
         'img/800p.png',
+        'img/previous.png',
+        'img/forward.png',
         'smudge/index.html',
         'smudge/pricelist.html',
         'smudge/contact.png',

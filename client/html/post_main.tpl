@@ -1,7 +1,20 @@
 <div class='content-wrapper transparent post-view'>
     <aside class='sidebar'>
+        <div id="floatingButtons">
+            <% if (ctx.prevPostId) { %>
+                <a href='<%= ctx.getPostUrl(ctx.prevPostId, ctx.parameters) %>' action="previous"></a>
+            <% } else { %>
+                <a class="naFloat" action="previous"></a>
+            <% } %>
+        <div class="spacer"></div>
+            <% if (ctx.nextPostId) { %>
+                <a href='<%= ctx.getPostUrl(ctx.nextPostId, ctx.parameters) %>' action="forward"></a>
+            <% } else { %>
+                <a class="naFloat" action="forward"></a>
+            <% } %>
+        </div>
         <nav class='buttons'>
-            <article class='previous-post'>
+            <article class='previous-post classicButtons'>
                 <% if (ctx.prevPostId) { %>
                     <% if (ctx.editMode) { %>
                         <a rel='prev' href='<%= ctx.getPostEditUrl(ctx.prevPostId, ctx.parameters) %>'>
@@ -15,7 +28,7 @@
                     <span class='vim-nav-hint'>&lt; Previous post</span>
                 </a>
             </article>
-            <article class='next-post'>
+            <article class='next-post classicButtons'>
                 <% if (ctx.nextPostId) { %>
                     <% if (ctx.editMode) { %>
                         <a rel='next' href='<%= ctx.getPostEditUrl(ctx.nextPostId, ctx.parameters) %>'>

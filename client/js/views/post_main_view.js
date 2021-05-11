@@ -6,6 +6,7 @@ const views = require("../util/views.js");
 const uri = require("../util/uri.js");
 const keyboard = require("../util/keyboard.js");
 const Touch = require("../util/touch.js");
+const FloatingButtons = require("../util/floating_buttons.js")
 const PostContentControl = require("../controls/post_content_control.js");
 const PostNotesOverlayControl = require("../controls/post_notes_overlay_control.js");
 const PostReadonlySidebarControl = require("../controls/post_readonly_sidebar_control.js");
@@ -100,6 +101,15 @@ class PostMainView {
             if (ctx.editMode) {
                 this.sidebarControl._evtDeleteClick(e);
             }
+        });
+
+        new FloatingButtons({
+            prevPostId: ctx.prevPostId
+                ? ctx.prevPostId
+                : null,
+            nextPostId: ctx.nextPostId
+                ? ctx.nextPostId
+                : null,
         });
 
         new Touch(

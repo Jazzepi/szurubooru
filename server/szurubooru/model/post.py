@@ -128,6 +128,7 @@ class PostRelation(Base):
         sa.ForeignKey("post.id"),
         primary_key=True,
         nullable=False,
+
         index=True,
     )
 

@@ -103,7 +103,7 @@ class PostMainView {
             }
         });
 
-        new FloatingButtons({
+        if (typeof window.orientation !== "undefined") new FloatingButtons({
             prevPostId: ctx.prevPostId
                 ? ctx.prevPostId
                 : null,
@@ -112,7 +112,7 @@ class PostMainView {
                 : null,
         });
 
-        new Touch(
+        if (typeof window.orientation !== "undefined") new Touch(
             postContainerNode,
             () => {
                 if (!ctx.editMode) {

@@ -1,7 +1,6 @@
 # User-specific configuration
 config.yaml
 .env
-.vscode
 
 # Client Development Artifacts
 */*_modules/

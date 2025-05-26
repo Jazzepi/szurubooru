@@ -6,11 +6,11 @@
     "watch": "c1=\"\";while :;do c2=$(find html js css img -type f -and -not -iname '*autogen*'|sort|xargs cat|md5sum);[[ $c1 != $c2 ]]&&npm run build -- --debug --no-vendor-js;c1=$c2;sleep 1;done"
   },
   "dependencies": {
-    "dompurify": "^2.0.17",
+    "dompurify": "3.2.4",
     "font-awesome": "^4.7.0",
     "ios-inner-height": "^1.0.3",
     "js-cookie": "^2.2.0",
-    "marked": "^0.7.0",
+    "marked": "4.0.10",
     "mousetrap": "^1.6.2",
     "nprogress": "^0.2.0",
     "superagent": "^3.8.3"
@@ -23,10 +23,10 @@
     "browserify": "^16.2.2",
     "csso": "^3.5.1",
     "glob": "^7.1.2",
-    "html-minifier": "^3.5.18",
+    "html-minifier": "^4.0.0",
     "jimp": "^0.13.0",
     "stylus": "^0.54.5",
-    "terser": "^3.7.7",
+    "terser": "5.14.2",
     "underscore": "^1.9.1"
   }
 }

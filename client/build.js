@@ -234,9 +234,6 @@ function bundleBinaryAssets() {
         'img/800p.png',
         'img/previous.png',
         'img/forward.png',
-        'smudge/index.html',
-        'smudge/pricelist.html',
-        'smudge/contact.png',
     ]
     for (let file of customFiles) {
         console.info('Copying', file, 'to', 'public/' + file);
@@ -300,7 +297,6 @@ function bundleWebAppFiles() {
 function makeOutputDirs() {
     const dirs = [
         './public',
-        './public/smudge',
         './public/css',
         './public/fonts',
         './public/img',

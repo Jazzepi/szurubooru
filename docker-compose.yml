@@ -3,51 +3,64 @@
 ## Use this as a template to set up docker-compose, or as guide to set up other
 ## orchestration services
 version: '2'
+#export MOUNT_DATA='/mnt/booru_storage/MOUNTS/data'
+#export MOUNT_SQL='/mnt/booru_storage/MOUNTS/sql'
 
 services:
-
   server:
-    # image: szurubooru/server:latest
+    image: whitekitten-booru-server:latest
     build:
       context: ./server
     depends_on:
       - sql
+    restart: always
     environment:
       ## These should be the names of the dependent containers listed below,
       ## or FQDNs/IP addresses if these services are running outside of Docker
       POSTGRES_HOST: sql
       ## Credentials for database:
-      POSTGRES_USER:
-      POSTGRES_PASSWORD:
+      POSTGRES_USER: szuru
+      POSTGRES_PASSWORD: 4HWf8e1VnCesfQiRIn76
       ## Commented Values are Default:
       #POSTGRES_DB: defaults to same as POSTGRES_USER
       #POSTGRES_PORT: 5432
       #LOG_SQL: 0 (1 for verbose SQL logs)
     volumes:
-      - "${MOUNT_DATA}:/data"
+      - "/mnt/booru_storage/MOUNTS/data:/data"
       - "./server/config.yaml:/opt/app/config.yaml"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1g"
 
   client:
-    # image: szurubooru/client:latest
+    image: whitekitten-booru-client:latest
     build:
       context: ./client
-      args:
-          BUILD_INFO: 'dickbutt 9000'
     depends_on:
       - server
+    restart: always
     environment:
       BACKEND_HOST: server
       BASE_URL:
     volumes:
-      - "${MOUNT_DATA}:/data:ro"
+      - "/mnt/booru_storage/MOUNTS/data:/data:ro"
     ports:
-      - "${PORT}:80"
+      - "80:80"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1g"
 
   sql:
     image: postgres:11-alpine
-    restart: unless-stopped
+    restart: always
     environment:
       POSTGRES_USER:
       POSTGRES_PASSWORD:
     volumes:
-      - "${MOUNT_SQL}:/var/lib/postgresql/data"
+      - "/mnt/booru_storage/MOUNTS/sql:/var/lib/postgresql/data"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1g"

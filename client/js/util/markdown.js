@@ -200,7 +200,7 @@ function formatInlineMarkdown(text) {
     for (let wrapper of wrappers) {
         text = wrapper.preprocess(text);
     }
-    text = marked.inlineLexer(text, [], options);
+    text = marked.parseInline(text, [], options);
     wrappers.reverse();
     for (let wrapper of wrappers) {
         text = wrapper.postprocess(text);

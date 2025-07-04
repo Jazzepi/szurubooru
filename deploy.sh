@@ -18,8 +18,10 @@ rsync -rvc \
 --update \
 --exclude '*node_modules*' \
 --exclude '*.swp' \
+--exclude '*__pycache__*' \
 --exclude '*.git*' \
 --exclude '*.idea*' \
+--exclude 'config.yaml.dist' \
 --exclude deploy.sh \
 . \
 root@booru:~/boruu
